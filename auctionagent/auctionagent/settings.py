@@ -85,9 +85,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "core.middleware.LoginRequiredMiddleware",
 ]
 CSRF_COOKIE_SECURE = True
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 
 ROOT_URLCONF = 'auctionagent.urls'
