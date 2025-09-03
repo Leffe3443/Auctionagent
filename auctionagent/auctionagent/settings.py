@@ -43,11 +43,14 @@ OPENAI_KEY = env_required('OPENAIKEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'auctionagent-10f79fc1e2df.herokuapp.com',
     'www.auctionagent.se'
+
+    '127.0.0.1:8000',
+    '127.0.0.1:8080'
 ]
 
 
