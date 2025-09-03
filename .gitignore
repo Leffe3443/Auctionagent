@@ -1,0 +1,6 @@
+# Environment related
+.env
+env/
+
+# Database related
+.sqlite3

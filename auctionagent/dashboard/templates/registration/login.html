@@ -1,0 +1,255 @@
+{% load static %}
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Auction Agent</title>
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --aa-bg-1:#0e1525; --aa-bg-2:#1a2240; --aa-accent:#6ee7ff; --aa-accent-2:#7c5cff; --aa-warm:#f6c445;
+    }
+    /* --- Global --- */
+    body{background: radial-gradient(1200px 600px at 10% -10%,rgba(124,92,255,.18),transparent),
+                      radial-gradient(900px 450px at 90% 10%,rgba(110,231,255,.15),transparent),
+                      linear-gradient(180deg,var(--aa-bg-1),var(--aa-bg-2)); color:#e9eeff;}
+    .text-muted{color:#b7c2e0 !important;}
+    .container-narrow{max-width:1100px}
+
+    /* --- Navbar --- */
+    .aa-navbar{backdrop-filter: blur(8px); background:rgba(8,12,24,.35); border-bottom:1px solid rgba(255,255,255,.08);}
+    .aa-brand img{height:32px}
+    .aa-nav-link{color:#dfe8ff; opacity:.9; }
+    .aa-nav-link:hover{opacity:1; color:#fff}
+    .btn-outline-light{--bs-btn-color:#dfe8ff; --bs-btn-hover-bg:#ffffff1a; --bs-btn-border-color:#ffffff44;}
+
+    /* --- Hero --- */
+    .hero{padding: 72px 0 36px;}
+    .hero h1{font-weight:800; letter-spacing:.2px;}
+    .sublead{font-size:1.15rem}
+
+    /* --- Cards / glass --- */
+    .glass-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      border-radius:18px;
+    }
+    .card-light{background:#0f162b; border:1px solid rgba(255,255,255,.08);}
+
+    /* --- Buttons --- */
+    .btn-gradient{
+      background: linear-gradient(135deg, var(--aa-accent), var(--aa-accent-2));
+      border:0; color:#101321; font-weight:700;
+      box-shadow: 0 8px 22px rgba(124,92,255,.4);
+    }
+    .btn-gradient:hover{filter:brightness(1.05); color:#0c0f1f}
+
+    /* --- Feature icons --- */
+    .feature-icon{
+      width:48px;height:48px; display:inline-grid; place-items:center;
+      border-radius:12px; background: #121a33; border:1px solid rgba(255,255,255,.12);
+      color:#9dc7ff;
+    }
+
+    /* --- Sections --- */
+    section{padding:64px 0;}
+    .section-title{font-weight:800; letter-spacing:.3px;}
+
+    /* --- Login form tweaks --- */
+    .login-card .form-control{background:#0b1224; color:#e9eeff; border-color:#2b3659;}
+    .login-card .form-control:focus{background:#0b1224; color:#fff; border-color:#6ee7ff; box-shadow:0 0 0 .2rem rgba(110,231,255,.12);}
+    .login-card .btn-primary{background:#2c79ff; border:0; font-weight:700}
+    .login-card .btn-primary:hover{filter:brightness(1.05)}
+    .logo-lg{max-height:64px}
+
+    /* --- Footer --- */
+    .footer{border-top:1px solid rgba(255,255,255,.08); color:#b7c2e0}
+
+    /* --- Small helpers --- */
+    .badge-soft{background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:#dfe8ff;}
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="aa-navbar navbar navbar-expand-lg fixed-top ">
+    <div class="container container-narrow">
+      <a class="navbar-brand aa-brand d-flex align-items-center" href="#top">
+        <img src="{% static 'imgs/auctionagentwhitetext-transparentbg.png' %}" style="height:110px;" alt="Auction Agent">
+        <!-- <span class="fw-bold">Auction&nbsp;Agent</span> -->
+      </a>
+
+      <button class="navbar-toggler text-bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#aaNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="aaNav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <!-- <li class="nav-item"><a class="aa-nav-link nav-link" href="#how"><i class="fa-solid fa-sparkles me-1"></i> Funktioner</a></li> -->
+          <li class="nav-item"><a class="aa-nav-link nav-link" href="#features"><i class="fa-solid fa-diagram-project me-1"></i> Så funkar det</a></li>
+          {% if request.user.is_authenticated %}
+            <li class="nav-item"><a class="aa-nav-link nav-link" href="{% url 'dashboard' %}"><i class="fa-solid fa-play me-1"></i> Sök</a></li>
+          {% endif %}
+          <!-- <li class="nav-item"><a class="aa-nav-link nav-link" href="#contact"><i class="fa-regular fa-envelope me-1"></i> Kontakt</a></li> -->
+          <!-- <li class="nav-item ms-lg-3">
+            <a href="#login" class="btn btn-outline-light btn-sm">
+              <i class="fa-solid fa-right-to-bracket me-1"></i> Logga in
+            </a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header id="top" class="hero">
+    <div class="container container-narrow">
+      <div class="row g-4 align-items-start mt-5">
+        <div class="col-lg-7">
+          <!-- <span class="badge badge-soft mb-3"><i class="fa-solid fa-robot me-1"></i> AI-drivna auktionsagenter</span> -->
+          <h1 class="display-5 mb-3">Hitta <span class="text-info">undervärderade fynd</span> och agera snabbare än marknaden.</h1>
+          <p class="sublead text-muted mb-4">
+            Vi bevakar tusentals objekt, analyserar prisdata i realtid och visar möjligheter att köpa lågt och sälja högt.
+            Bygg egna agenter för klockor, smycken och samlarobjekt – allt i ett intuitivt gränssnitt.
+          </p>
+          <div class="d-flex flex-wrap gap-2">
+            <!-- <a href="#login" class="btn btn-gradient"><i class="fa-solid fa-right-to-bracket me-2"></i>Logga in och börja</a> -->
+            <a href="#features" class="btn btn-outline-light"><i class="fa-regular fa-circle-question me-2"></i>Läs mer</a>
+          </div>
+
+        
+
+          <div class="d-flex gap-4 mt-4">
+            <div><div class="h3 mb-0">+120k</div><div class="text-muted small">Objekt analyserade/mån</div></div>
+            <div><div class="h3 mb-0">~18s</div><div class="text-muted small">Genomsnittlig söktid</div></div>
+            <div><div class="h3 mb-0">24/7</div><div class="text-muted small">Bevakning</div></div>
+          </div>
+        </div>
+
+        <!-- Login card always visible on desktop -->
+        <div id="login" class="col-lg-5">
+          <div class="glass-card p-4 login-card">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div>
+                <div class="fw-bold">Logga in</div>
+                <div class="small text-muted">Fortsätt till dina agenter & instrumentpanel</div>
+              </div>
+            </div>
+
+            {% if form.errors %}
+              <div class="alert alert-danger py-2">Fel användarnamn eller lösenord.</div>
+            {% endif %}
+
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label">Användarnamn</label>
+                {{ form.username|add_class:"form-control" }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Lösenord</label>
+                {{ form.password|add_class:"form-control" }}
+              </div>
+              <button class="btn btn-primary w-100" type="submit">
+                <i class="fa-solid fa-right-to-bracket me-2"></i>Logga in
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container container-narrow">
+      <h2 class="section-title mb-4">Varför Auction Agent?</h2>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="card card-light p-4 h-100">
+            <div class="feature-icon mb-3"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+            <h5 class="text-white">Smart sökning</h5>
+            <p class="text-muted">Söker igenom flera auktionshus och normaliserar data. Filtrera på kategori, pris, slutdatum och plats.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-light p-4 h-100">
+            <div class="feature-icon mb-3"><i class="fa-solid fa-brain"></i></div>
+            <h5 class="text-white">AI-analys</h5>
+            <p class="text-muted">Modeller tränade på klockor & smycken rankar chans till fynd utifrån varumärke, skick och efterfrågan.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-light p-4 h-100">
+            <div class="feature-icon mb-3"><i class="fa-solid fa-bolt"></i></div>
+            <h5 class="text-white">Blixtsnabb bevakning</h5>
+            <p class="text-muted">Notifieringar i realtid när priset är rätt eller objektet närmar sig sluttid – så du hinner agera.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how">
+    <div class="container container-narrow">
+      <h2 class="section-title mb-4">Så funkar det</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="feature-icon mb-2"><i class="fa-solid fa-sliders"></i></div>
+            <h6 class="mb-2">1. Välj kriterier</h6>
+            <p class="text-muted">Bestäm kategori, budget, varumärken och bevakningsfönster. Spara som en agent.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="feature-icon mb-2"><i class="fa-solid fa-satellite-dish"></i></div>
+            <h6 class="mb-2">2. Systemet söker</h6>
+            <p class="text-muted">Crawler + AI analyserar kataloger, prisdata och historik. Resultaten rankas efter potential.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="feature-icon mb-2"><i class="fa-solid fa-chart-line"></i></div>
+            <h6 class="mb-2">3. Köp smart</h6>
+            <p class="text-muted">Få rekommendationer med länkar och nyckeldata. Följ upp i din instrumentpanel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact / Footer -->
+  <!-- <section id="contact" class="pb-5">
+    <div class="container container-narrow">
+      <div class="glass-card p-4">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-8">
+            <h3 class="mb-1">Har du frågor?</h3>
+            <p class="text-muted mb-0">Kontakta oss för demo, pris och integrationsmöjligheter.</p>
+          </div>
+          <div class="col-md-4 text-md-end">
+            <a href="mailto:hello@auctionagent.io" class="btn btn-outline-light">
+              <i class="fa-regular fa-envelope me-2"></i>hello@auctionagent.io
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer text-center mt-4 pt-3 small">
+        © {{ now|default:"2025" }} Auction Agent AB – Alla rättigheter förbehållna.
+      </div>
+    </div>
+  </section> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

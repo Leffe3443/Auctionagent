@@ -1,0 +1,31 @@
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+<nav class="navbar-toolbar px-3">
+  <div class="d-flex flex-wrap align-items-center toolbar-row w-100">
+
+    <!-- Left group -->
+    <div class="d-flex gap-2">
+      <a class="btn btn-action" href="{% url 'dashboard' %}">
+        <i class="fa-solid fa-play me-2"></i>Sök
+      </a>
+      <!-- <a class="btn btn-valuation" href="#">
+        <i class="fa-solid fa-diamond me-2"></i>Värdera
+      </a> -->
+      <a class="btn btn-statistics" href="{% url 'adminndata' %}">
+        <i class="fa-solid fa-calendar-days me-2"></i>Data &amp; admin
+      </a>
+    </div>
+
+    <!-- Right group -->
+   <form method="post" action="{% url 'logout' %}" class="ms-auto">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">
+        <i class="fa-solid fa-right-from-bracket me-2"></i>Logga ut
+    </button>
+    </form>
+
+  </div>
+</nav>

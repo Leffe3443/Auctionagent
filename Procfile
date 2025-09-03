@@ -1,0 +1,1 @@
+web: PYTHONPATH=Project/samfony gunicorn samfony.wsgi:application --log-file=-

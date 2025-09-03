@@ -1,0 +1,57 @@
+
+
+  /* Auction Agent Toolbar */
+  .aa-toolbar {
+    background: linear-gradient(135deg, #0e1525 0%, #1f2a44 60%, #22304e 100%);
+    border-radius: 1rem;
+    padding: .75rem 1rem;
+    color: #e9f0ff;
+    box-shadow: 0 10px 30px rgba(16,20,40,.35), inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .aa-toolbar .btn-glass {
+    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+    color: #e9f0ff;
+  }
+  .aa-toolbar .btn-glass:hover,
+  .aa-toolbar .btn-glass:focus {
+    background: rgba(255,255,255,.16);
+    color: #fff;
+  }
+  .aa-toolbar .dropdown-menu {
+    border-radius: .75rem;
+    box-shadow: 0 10px 24px rgba(0,0,0,.25);
+  }
+  .aa-toolbar .dropdown-item:active {
+    background: #0d6efd;
+    color: #fff;
+  }
+  .aa-toolbar .btn-apply {
+    background: linear-gradient(135deg, #f6c445, #f39c12);
+    border: 0;
+    color: #1c1c1c;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(243,156,18,.35);
+  }
+  .aa-toolbar .btn-apply:hover { filter: brightness(1.2); }
+  .aa-toolbar .btn-icon {
+    color: #cfe0ff;
+    background: transparent;
+    border: 0;
+  }
+  .aa-toolbar .btn-icon:hover { color: #fff; }
+
+  /* Selection badges */
+  .aa-badge {
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.18);
+    color: #e9f0ff;
+  }
+
+  /* Make the row wrap nicely on small screens */
+  .aa-toolbar .toolbar-row { gap: .5rem .75rem; }
+
+.btn-valuation {
+  
+}

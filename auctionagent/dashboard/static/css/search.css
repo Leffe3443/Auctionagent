@@ -1,0 +1,193 @@
+body {
+  background-color: #1f2a44;
+  padding: 0px;
+}
+
+
+#updateMessage {
+  opacity: 0;
+  transition: opacity 0.8s ease; /* 0.8s fade */
+}
+
+#updateMessage.show {
+  opacity: 1;
+}
+
+#WarnMessage {
+  opacity: 0;
+  transition: opacity 0.8s ease; /* 0.8s fade */
+}
+
+#WarnMessage.show {
+  opacity: 1;
+}
+
+
+/* Results from filtered menu */
+.agentResults{
+  display:flex;
+  margin-top: 20px;
+  flex-wrap:wrap;
+  gap:1rem;
+  align-items:flex-start;
+  max-height: 600px;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #0e1525 0%, #1f2a44 60%, #22304e 100%);
+  border-radius: 1rem;
+  padding: .75rem 1rem;
+  color: #e9f0ff;
+  box-shadow: 0 10px 30px rgba(16,20,40,.35), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.agentResults .agent-col{
+  display:flex;
+  flex-direction:column;
+  gap:.75rem;
+  /* responsive column width; tweak as you like */
+  flex: 1 1 280px;         /* min column width */
+  max-width: 360px;        /* prevents mega-wide columns */
+}
+
+
+/* Auction search animation START */
+
+.loadinganimationcontainer {
+    display: none;
+}
+
+.loadingtext {
+  position: relative;
+  height: 1.5em;
+  overflow: hidden;
+}
+
+.loadingtext span {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  animation: cycleText 6s infinite;
+}
+
+
+.typing-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  margin-bottom: 20px;
+}
+
+.typing-indicator span {
+  width: 15px;
+  height: 15px;
+  background: #000;
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink 1.5s infinite;
+}
+
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.loadingtext span:nth-child(1) { animation-delay: 0s; }
+.loadingtext span:nth-child(2) { animation-delay: 2s; }
+.loadingtext span:nth-child(3) { animation-delay: 4s; }
+
+@keyframes cycleText {
+  0% { opacity: 0; transform: translateY(100%); }
+  10%,30% { opacity: 1; transform: translateY(0); }
+  40% { opacity: 0; transform: translateY(-100%); }
+  100% { opacity: 0; }
+}
+/* Auction search animation END */
+
+
+.card-body {
+  font-size: 0.95rem;   /* smaller text */
+  color: #444;          /* darker gray */
+  font-family: "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+.btn-auction {
+  position: relative;
+  background-color: #1f2a44;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.btn-auction::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* cover full button */
+  border-radius: inherit;
+  padding: 2px; /* thickness of border */
+  background: linear-gradient(
+    90deg,
+    #f6c445,
+    #f39c12,
+    #ff3c00,
+    #d91ad9,
+    #3c8dff,
+    #00e1ff,
+    #4dff4d,
+    #f6c445
+  );
+  background-size: 400% 400%;
+  animation: moveBorder 6s linear infinite;
+  
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  z-index: -1;
+}
+
+@keyframes moveBorder {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.btn-auction:hover {
+    color: white;
+    background-color: #1849bb;
+}
+
+
+/* Find similar items search box START */
+
+/* animated thick red "border" using box-shadow (no layout shift) */
+.is-pulsing {
+  animation: aa-border-pulse 2s ease-in-out forwards;
+}
+
+@keyframes aa-border-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(220, 53, 69, 0);   }
+  50%  { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0.95);}
+  100% { box-shadow: 0 0 0 0   rgba(220, 53, 69, 0);   }
+}
+
+/* Find similar items search box END */
+
+
+.btn-valuation {
+    background: linear-gradient(135deg, #29bd98, #ffffff);
+    border: 0;
+    color: #1c1c1c;
+    font-weight: 600;
+    box-shadow: 0 6px 10px rgba(2, 255, 255, 0.904);
+}
+

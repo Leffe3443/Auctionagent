@@ -1,0 +1,703 @@
+
+{% load static %}
+
+
+
+
+
+<head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- Markdown parser -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+
+<!-- Sanitizer -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"
+        integrity="sha512-YlctBG9PGZIhh9keoqI3eZkQM9T8QUbiBi7qNYAO/TUEo8jqWX5pLp5+x1cKRQDRzJ/lyGyJ9WUVNIRduxIIFw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+</head>
+
+
+ <link rel="stylesheet" href="{% static 'css/auctionscrapenav.css' %}">
+<link rel="stylesheet" href="{% static 'css/findsimilar.css' %}">
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+<link rel="stylesheet" href="{% static 'css/aiagent.css' %}"> 
+
+{% include 'navbar.html' %}
+
+
+<body>
+    
+
+
+<div class="container-fluid">
+
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <!-- Logo + Title -->
+   
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" 
+            aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+  </div>
+</nav>
+
+
+<!-- Auction agent scraper -->
+
+<div class="row mt-2">
+
+
+    <div class="col-md-6 p-4 bg-light border border-secondary rounded">
+
+        <h2>Sök igenom auctionet.com</h2>
+    
+        <nav class="aa-toolbar">
+            <div class="d-flex flex-wrap align-items-center toolbar-row">
+        
+                <!-- Category dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-glass dropdown-toggle" type="button" id="ddCategory" data-bs-toggle="dropdown"
+                        aria-expanded="false" data-name="Category">
+                        <i class="fa-solid fa-list-ul me-2"></i>
+                        <span class="dd-label">Välj kategori</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="ddCategory">
+                        <li><a class="dropdown-item" href="#" data-value="31-clocks-watches">Klockor</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="25-art">Konst</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="13-jewellery-gemstones">Smycken & ädelstenar</a></li>
+                    </ul>
+                </div>
+        
+                <!-- Sort dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-glass dropdown-toggle" type="button" id="ddSort" data-bs-toggle="dropdown"
+                        aria-expanded="false" data-name="Sort">
+                        <i class="fa-solid fa-sort-amount-down me-2"></i>
+                        <span class="dd-label">Sortera</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="ddSort">
+                        <li><a class="dropdown-item" href="#" data-value="bid_asc">Lägsta bud</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="bid_desc">Högsta bud</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="end_asc_active">Snart slut</a></li>
+                    </ul>
+                </div>
+        
+                <div class="dropdown">
+                    <button class="btn btn-glass dropdown-toggle" type="button" id="ddPages" data-bs-toggle="dropdown"
+                        aria-expanded="false" data-name="Pages">
+                        <i class="fa-solid fa-file me-2"></i>
+                        <span class="dd-label">Antal sidor</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="ddPages">
+                        <li><a class="dropdown-item" href="#" data-value="1">1</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="2">2</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="3">3</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="4">4</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="5">5</a></li>
+                    </ul>
+                </div>
+        
+        
+        
+                <!-- Apply -->
+                <button id="updateBtn" class="btn btn-apply">
+                    <i class="fa-solid fa-filter me-2"></i>Applicera sökfilter
+                </button>
+        
+                <!-- Info -->
+                <button class="btn btn-icon ms-auto" data-bs-toggle="modal" data-bs-target="#infoModal" title="Om sökfilter">
+                    <i class="fa-regular fa-circle-question fa-lg"></i>
+                </button>
+        
+                <!-- Live selections -->
+                <span class="badge aa-badge ms-1" id="badgeCategory" hidden>
+                    <i class="fa-solid fa-tag me-1"></i><span class="text"></span>
+                </span>
+                <span class="badge aa-badge ms-1" id="badgeSort" hidden>
+                    <i class="fa-solid fa-arrow-down-short-wide me-1"></i><span class="text"></span>
+                </span>
+            </div>
+        </nav>
+
+        <!-- Modal (unchanged) -->
+        <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog"><div class="modal-content shadow">
+            <div class="modal-header">
+            <h5 class="modal-title">Information om sökfilter</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+            <h5>Information om sökfilter</h5>
+            <p>I nuläget är sökfilter något begränsade, vi jobbar på att lägga till fler</p>
+            </div>
+        </div></div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p id="updateMessage" class="alert alert-success fade" role="alert">Val uppdaterade</p>        
+            </div>
+            <div class="col-md-6">
+                <p id="WarnMessage" class="alert alert-danger fade" role="alert">Kontrollera sökval</p>        
+            </div>
+        </div>    
+                           
+                  
+        <button id="runAgentBtn" class="btn btn-auction mt-2 rounded">
+            <i class="fa fa-spinner fa-spin d-none" id="auctionsearchicon"></i>
+            Sök
+        </button>
+
+        <button id="StopAgentBtn" class="btn btn-danger mt-2 rounded d-none">
+            Stoppa sök
+        </button>        
+
+
+    <div class="d-flex">
+        
+        <div id="agentResults" class="agentResults">
+
+            
+            <div class="latest_search" id="latest_search">
+                <!-- <h3>Dina senaste sökningar:</h3> -->
+                 <h3>Fynda</h3>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    {% for it in auction_items_latest|slice:":16" %}
+                        <div class="col">
+                        <div class="card h-100 shadow-sm border-secondary rounded">
+                            {% if it.main_image_url %}
+                            <img src="{{ it.main_image_url }}" class="card-img-top" alt="{{ it.title }}"
+                                loading="lazy" style="object-fit:cover; max-height:200px;">
+                            {% endif %}
+
+                            <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-2">{{ it.title }}</h5>
+
+                            <p class="mb-1">Nuvarande bud: <strong>{{ it.current_bid }}</strong></p>
+                            <p class="mb-1">Estimate: <strong>{{ it.estimate }}</strong> SEK</p>
+                            <p class="mb-1">Avslutas: <strong>{{ it.ends_at }}</strong></p>
+
+                            {% if it.info_text %}
+                                <p class="small text-muted mt-2">{{ it.info_text }}</p>
+                            {% endif %}
+
+                            <div class="small text-muted mt-auto">ID: {{ it.item_id }}</div>
+
+                            <div class="mt-2 d-flex gap-2">
+                                <a href="{{ it.url }}" class="btn btn-sm btn-secondary rounded" target="_blank" rel="noopener">Till objekt</a>
+                                <a class="btn btn-primary btn-sm mt-2" href="#"
+                                    data-itemid="{{ it.item_id }}"
+                                    onclick="GetInfoBoostInformation(this, event);">
+                                    Infoboost
+                                    </a>
+                            </div>
+
+                            
+                            </div>
+
+                            {% if it.images %}
+                            <div class="p-2 d-flex flex-wrap gap-2 border-top">
+                                {% for img in it.images|slice:":4" %}
+                                <img src="{{ img }}" alt="{{ it.title }}" loading="lazy"
+                                    style="width:70px;height:70px;object-fit:cover" class="rounded border">
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+
+            </div>
+
+
+        </div>
+
+        
+
+    </div>
+
+    
+             <div class="loadinganimationcontainer" id="loadinganimationcontainer">
+                <div class="typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
+            <h3 class="loadingtext">
+                <!-- More advanced display later where we display spans according to the query being executed -->
+                <span>Skannar auctionet.com</span>
+                <span>Hämtar objekt</span>
+                <span>Hämtar detaljerad information</span>
+            </h3>
+            </div>
+
+    </div>
+
+    <div class="col-md-6 p-3 bg-light border border-secondary rounded">
+
+        <h2>Auctionagent</h2>
+
+
+        <div class="card mt-3 ab-toolbar">
+        <div class="card-body">
+            <h5 class="card-title mb-2 text-white">Frisök</h5>
+                                   
+            <!-- Modal (unchanged) -->
+            <div class="modal fade" id="infoModalfreesearch" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content shadow">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Information om sökfilter</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Information om frisök</h5>
+                            <p>I nuläget är sökfilter något begränsade, vi jobbar på att lägga till fler</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <span class="text-white">Specificera information eller frisök</span>
+                <!-- Info -->
+            <button class="btn btn-icon ms-auto" data-bs-toggle="modal" data-bs-target="#infoModalfreesearch" title="Om sökfilter">
+                <i class="fa-regular fa-circle-question fa-lg"></i>
+            </button>
+            
+            
+            <hr>
+
+            <form id="aiFreeSearchForm" class="" action="" method="post">
+                {% csrf_token %}
+
+                <!-- <label class="text-white">Referens:</label>
+                <input type="text" id="object_link_freesearch" name="object_link_freesearch" placeholder="Kopiera en länk till föremålet - FRIVILLIGT" class="form-control"> -->
+
+                <label class="text-white">Typ av objekt:</label>
+                <input type="text" id="object_type_freesearch" name="object_type_freesearch" placeholder="Typ av föremål, klocka, tavla etc." class="form-control mt-2">
+
+                <div class="d-flex gap-2">
+                    <textarea id="aiFreeSearchPrompt" name="aiFreeSearchPrompt" class="form-control mt-2" rows="2"
+                    placeholder="Exempel: Hitta fler klockor som denna under 1000kr i andra färger ELLER lämna blank för att få tillbaka liknande objekt"></textarea>
+                    <button id="aiRunFreeSearchBtn" class="btn btn-apply mt-2" type="submit">Sök</button>
+                </div>
+
+                
+                </form>
+
+                <div class="ai-thinking mb-2" id="ai-thinkingfreesearch">
+                        <strong class="text-white">Formulerar för läsbarheten</strong>
+                        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                </div>
+
+                <div id="aiFreeSearchResults" class="aiResults mt-3">
+
+                   
+
+                </div>
+            
+            <!-- <div id="aiParsed" class="small text-muted mt-2"></div> -->
+
+
+        </div>
+        </div>
+
+
+         <!-- AI Search reference -->
+        <div class="card mt-3 ab-toolbar similaritemsearchbox">
+        <div class="card-body similaritemsearch">
+            <h5 class="card-title mb-2 text-white">Hitta liknande föremål</h5>
+            
+            <span class="text-white">Fyll i id nummer på objektet du vill hitta mer av</span> <hr>
+            <label class="text-white">id nummer: </label>
+
+            <form id="aiSearchForm" action="" method="post">
+                {% csrf_token %}
+                <input type="text" id="itemidaisearch" name="itemidaisearch" class="form-control mb-2"
+                        placeholder="Auctionet item id (e.g. 4474484)" required>
+
+                <!-- <div class="d-flex gap-2">
+                    <textarea id="aiPrompt" name="aiPrompt" class="form-control" rows="2"
+                    placeholder="Exempel: Hitta fler klockor som denna under 1000kr i andra färger ELLER lämna blank för att få tillbaka liknande objekt"></textarea>                    
+                </div> Change in backend code aswell, this feature only concists of the item id -->
+                <button id="aiRunBtn" class="btn btn-apply mt-2" type="submit">Sök</button>
+
+                </form>
+
+                <div class="ai-thinking mb-2" id="ai-thinkingauctionsearch">
+                        <strong class="text-white">Formulerar för läsbarheten</strong>
+                        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                </div>
+
+                <div id="aiResults" class="aiResults mt-3">
+
+                </div>
+            
+            <!-- <div id="aiParsed" class="small text-muted mt-2"></div> -->
+
+
+        </div>
+        </div>
+
+        <!-- Coming soon -->
+        <!-- <h5 class="mt-3">Kanske intresserar dig:</h5>
+
+        <p>Karousell med rekommendationer på objekt</p>
+        <p>Skriv basic rekommendationsalgoritm, gör research på hur man gör</p>
+        <p>Basera på:</p>
+        <ul>
+            <li>Användares prompts</li>
+            <li>Användare sök inställningar på "sök igenom"</li>
+
+        </ul>
+
+        <p>Celery que that retrieves user history every 24h?</p>
+        <p>Make web scrape to auctionet.com AND OR openAI web request based on history</p> -->
+
+
+
+
+       
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+
+</body>
+
+{% include 'footer.html' %}
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+      // Handle category dropdown
+  document.querySelectorAll("#ddCategory + .dropdown-menu .dropdown-item").forEach(item => {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+      const btn = document.getElementById("ddCategory");
+      btn.textContent = item.textContent;
+      btn.dataset.selectedValue = item.dataset.value;
+    });
+  });
+
+  // Handle sort dropdown
+  document.querySelectorAll("#ddSort + .dropdown-menu .dropdown-item").forEach(item => {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+      const btn = document.getElementById("ddSort");
+      btn.textContent = item.textContent;
+      btn.dataset.selectedValue = item.dataset.value;
+    });
+  });
+
+  document.querySelectorAll("#ddPages + .dropdown-menu .dropdown-item").forEach(item => {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+      const btn = document.getElementById("ddPages");
+      btn.textContent = item.textContent;
+      btn.dataset.selectedValue = item.dataset.value;
+    });
+  });
+    
+
+    const itemidaisearch = document.getElementById("itemidaisearch");
+    // const itemid = document.getElementById("itemid").textContent;
+
+  
+    const out = document.getElementById("agentResults");
+
+    const runagent_button = document.getElementById("runAgentBtn");
+    const runagent_icon = document.getElementById("auctionsearchicon");
+
+    const loadinganimationcontainer = document.getElementById("loadinganimationcontainer");
+
+    let agent = {
+    running: false,
+    controller: null
+    };
+
+    const stopBtn = document.getElementById("StopAgentBtn");
+
+    runagent_button.addEventListener("click", async () => {
+
+    const category = document.getElementById("ddCategory").dataset.selectedValue || "";
+    const sort = document.getElementById("ddSort").dataset.selectedValue || "";
+    const pages = document.getElementById("ddPages").dataset.selectedValue || "";
+    
+    // update UI
+    const warnmsg = document.getElementById("WarnMessage");   // warning
+    // clear any previous state
+    warnmsg.classList.remove("show");
+
+    // check if either is empty
+    if (!category || !sort) {
+    warnmsg.classList.add("show");
+    warnmsg.style.display = 'block';
+
+    setTimeout(() => {
+        warnmsg.classList.remove("show");
+        warnmsg.style.display = 'none';
+    }, 5000);
+
+    return
+    } 
+
+
+    // stopBtn.classList.remove("d-none");
+
+
+    // Hide "Dina senaste sökningar results" when running scraper
+    const latest_search = document.getElementById("latest_search")
+    latest_search.style.display = 'none';
+        
+
+    // console.log("Pages input:", pages)
+    // out.innerHTML += `<h4>Scraping ${pages} page(s)…</h4>`;
+    
+    runagent_button.disabled = true;
+    runagent_icon.classList.remove = 'd-none';
+    loadinganimationcontainer.style.display = "block";
+    const oldLabel = runagent_button.textContent;
+    runagent_button.textContent = "Running…";
+
+
+    // console.log("Category:", category)
+    // console.log("Sorting", sort)
+    
+
+    const url = `api/auction-agent/run-auctionsearch/?itemtype=${encodeURIComponent(category)}&sortingmethod=${encodeURIComponent(sort)}&=${encodeURIComponent(pages)}`;
+   try {
+     const res = await fetch(url, {
+       method: "POST",
+       headers: {
+         "X-CSRFToken": getCookie("csrftoken"),
+         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+       },
+     });
+     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+     const data = await res.json();
+     const items = data.items || [];
+     if (!items.length) {
+       out.innerHTML = `<div class="text-warning">No items found.</div>`;
+       return;
+     }
+     renderInColumns(items, out, 4);   // 4 cards per column
+
+   } catch (err) {
+     out.innerHTML = `<div class="text-danger">Error: ${err.message || err}</div>`;
+     latest_search.style.display = 'block';
+
+  } finally {
+    loadinganimationcontainer.style.display = "none";
+    runagent_button.disabled = false;
+    runagent_icon.classList.add = 'd-none';
+    runagent_button.textContent = oldLabel;
+
+    // If you do small waits between pages, make them abortable too:
+    await sleep(200, signal);
+  }
+
+    
+  });
+
+
+
+});
+
+// Abortable sleep helper
+function sleep(ms, signal) {
+  return new Promise((resolve, reject) => {
+    const id = setTimeout(resolve, ms);
+    if (signal) {
+      signal.addEventListener("abort", () => {
+        clearTimeout(id);
+        reject(new DOMException("Aborted", "AbortError"));
+      }, { once: true });
+    }
+  });
+}
+
+
+// Grab CSRF from cookie
+function getCookie(name){
+  const v = `; ${document.cookie}`;
+  const p = v.split(`; ${name}=`);
+  if (p.length === 2) return p.pop().split(';').shift();
+}
+
+
+
+function chunk(arr, size){
+  const res = [];
+  for (let i = 0; i < arr.length; i += size) res.push(arr.slice(i, i + size));
+  return res;
+}
+
+// your existing card template, unchanged
+function renderCard(it){
+    
+  // handle image HTML
+  let imageHtml = "";
+  if (Array.isArray(it.images) && it.images.length) {
+    // main image
+    imageHtml += `<img src="${it.images[0]}" class="card-img-top mb-2" alt="${it.title}" loading="lazy" style="object-fit:cover; max-height:200px;">`;
+
+    // additional thumbs if more than one
+    if (it.images.length > 1) {
+      imageHtml += `
+        <div class="d-flex flex-wrap gap-2">
+          ${it.images.slice(1).map(url => `
+            <img src="${url}" alt="${it.title}" loading="lazy"
+                 style="width:80px; height:80px; object-fit:cover;" class="rounded border">
+          `).join("")}
+        </div>
+      `;
+    }
+  }
+
+
+  return `
+        <div class="card shadow-sm border-secondary rounded">
+      <div class="card-body">
+        <h6 class="card-title mb-1">
+          <p>Nuvarande bud: <strong>${it.current_bid ?? "—"}</strong></p>
+          <br>
+          <h5 target="_blank" rel="noopener" id="itemtitle">${it.title}</h5>          
+           <a href="href="${it.url}"" class="btn btn-secondary rounded" target="_blank" rel="noopener" id="itemlink">Till objekt</a>
+
+        </h6>
+
+        ${imageHtml}
+
+        <p class="mt-2">Estimate: <strong>${it.estimate || "—"} SEK</strong></p>
+        <p>Avslutas: <strong>${it.ends_at || "—"}</strong></p>
+
+        <div class="small text-muted" id="itemid">ID: ${it.id}</div>
+        ${Array.isArray(it.info) && it.info.length ? `
+          <ul class="mb-0 mt-2">
+            ${it.info.map(x => `<li>${x}</li>`).join("")}
+          </ul>` : ""}
+
+        <a class="btn btn-primary btn-sm mt-2" href="#" data-itemid="${it.id}" onclick="GetInfoBoostInformation(this, event);">Infoboost</a>
+      </div>
+    </div>
+  `;
+}
+
+// render into columns with 4 cards per column
+function renderInColumns(items, container, cardsPerColumn = 4){
+  const cols = chunk(items, cardsPerColumn);
+  container.innerHTML = cols
+    .map(colItems => `<div class="agent-col">${colItems.map(renderCard).join("")}</div>`)
+    .join("");
+}
+
+
+function GetInfoBoostInformation(btn, event){
+  event.preventDefault(); // stop the href="#" scroll
+
+  const itemId = btn.dataset.itemid;
+  console.log("Clicked item ID:", itemId);
+
+    // 🔴 highlight the container with class="similaritemsearch"
+  const target = document.querySelector(".similaritemsearchbox");
+  if (target) {
+    target.classList.add("is-pulsing");
+    setTimeout(() => target.classList.remove("is-pulsing"), 5000); // fade out after 5s
+  }
+
+
+  const itemidaisearch = document.getElementById("itemidaisearch");
+  itemidaisearch.value = itemId;
+}
+
+
+
+// On "Update", collect all dropdown selections and print them
+document.getElementById("updateBtn").addEventListener("click", function () {
+  const toggles = document.querySelectorAll('nav .dropdown-toggle');
+  const selected = {};
+
+
+    const category = document.getElementById("ddCategory").dataset.selectedValue || "";
+    const sort     = document.getElementById("ddSort").dataset.selectedValue || "";
+
+    // update UI
+    const successmsg = document.getElementById("updateMessage"); // success
+    const warnmsg = document.getElementById("WarnMessage");   // warning
+
+    // clear any previous state
+    successmsg.classList.remove("show");
+    warnmsg.classList.remove("show");
+
+    // check if either is empty
+    if (!category || !sort) {
+    warnmsg.classList.add("show");
+
+    setTimeout(() => {
+        warnmsg.classList.remove("show");
+    }, 5000);
+    } else {
+    successmsg.classList.add("show");
+
+    setTimeout(() => {
+        successmsg.classList.remove("show");
+    }, 5000);
+    }
+
+    
+
+
+  console.log("Category:", category)
+    console.log("Sorting", sort)
+
+});
+
+
+</script>
+
+<script src="{% static 'js/ai_freesearch.js' %}"></script>
+
+<script src="{% static 'js/ai_auction_agent.js' %}"></script>
+
+<!-- <script src="{% static 'js/usage_stats.js' %}"></script> -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Markdown parser -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+
+<!-- Sanitizer -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"
+        integrity="sha512-YlctBG9PGZIhh9keoqI3eZkQM9T8QUbiBi7qNYAO/TUEo8jqWX5pLp5+x1cKRQDRzJ/lyGyJ9WUVNIRduxIIFw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+
