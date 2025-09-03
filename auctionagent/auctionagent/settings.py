@@ -46,8 +46,8 @@ OPENAI_KEY = env_required('OPENAIKEY')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'https://auctionagent-10f79fc1e2df.herokuapp.com/',
-    'https://www.auctionagent.se'
+    'auctionagent-10f79fc1e2df.herokuapp.com/',
+    'auctionagent.se'
 ]
 
 
