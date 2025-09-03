@@ -64,13 +64,13 @@ INSTALLED_APPS = [
     'dashboard',
 ]
 
-# if not DEBUG:
-#     SECURE_HSTS_PRELOAD = True
-#     SECURE_SSL_REDIRECT = True # Always True in production!
-#     CSRF_COOKIE_SECURE = True
-#     SESSION_COOKIE_SECURE = True
-#     SECURE_HSTS_SECONDS = 3600 
-#     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+if not DEBUG:
+    SECURE_HSTS_PRELOAD = True
+    SECURE_SSL_REDIRECT = True # Always True in production!
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 3600 
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/dashboard/"             # where to send after login
