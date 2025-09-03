@@ -1,0 +1,10 @@
+
+
+.auctionagentfooter{
+background-color: #22304e;
+    display: flex;
+  /* min-height: 100vh; */
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  margin-top: 40px;
+}
