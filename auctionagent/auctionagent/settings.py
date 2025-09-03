@@ -44,7 +44,10 @@ OPENAI_KEY = env_required('OPENAIKEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'https://auctionagent-10f79fc1e2df.herokuapp.com/',
+    'https://www.auctionagent.se'
+]
 
 
 # Application definition
@@ -83,6 +86,8 @@ MIDDLEWARE = [
 
     "core.middleware.LoginRequiredMiddleware",
 ]
+CSRF_COOKIE_SECURE = True
+
 
 ROOT_URLCONF = 'auctionagent.urls'
 
@@ -90,7 +95,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            "templates" / BASE_DIR,
+            BASE_DIR / 'templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -109,13 +114,24 @@ WSGI_APPLICATION = 'auctionagent.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+import dj_database_url
 
+DATABASES = {
+    "default": dj_database_url.config(
+        default=f"sqlite:///db.sqlite3",  # fallback for local dev
+        conn_max_age=600,
+        conn_health_checks=True,
+        # ssl_require=True,              # only require SSL on Heroku
+        ssl_require=("DYNO" in os.environ),
+
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -151,7 +167,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "static"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
